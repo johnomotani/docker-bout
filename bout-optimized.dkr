@@ -54,9 +54,9 @@ RUN wget https://computation.llnl.gov/projects/sundials/download/sundials-2.7.0.
  && cd build/ \
  && cmake \
   -DCMAKE_INSTALL_PREFIX=/usr/ \
-  -DEXAMPLES_INSTALL_PATH=/usr/examples \
+  -DCMAKEBUILDTYPE=Release \
+  -DEXAMPLES_INSTALL=OFF \
   -DCMAKE_LINKER=/usr/lib \
-  -DLAPACK_ENABLE=ON \
   -DOPENMP_ENABLE=ON \
   -DBUILD_SHARED_LIBS=ON \
   -DMPI_ENABLE=ON \
