@@ -144,7 +144,7 @@ RUN python3 -m pip install cython ipython
 # Build and install BOUT++
 # ----------------------------------------------------------------
 WORKDIR /opt
-RUN git clone -b v4.2.2 --depth 1 git://github.com/boutproject/BOUT-dev.git BOUT-dev
+RUN git clone -b v4.2.2 --depth 1 https://github.com/boutproject/BOUT-dev.git BOUT-dev
 
 WORKDIR /opt/BOUT-dev
 RUN ./configure --with-petsc PETSC_DIR=/petsc-3.9.3 PETSC_ARCH=arch-linux2-cxx-opt --with-sundials=/usr/ --with-fftw --with-netcdf --enable-openmp --with-slepc --with-lapack LIBS="-llapack -lblas" --localedir=$PWD/locale --enable-shared --enable-checks=no --enable-track=no --enable-optimize=3 \
