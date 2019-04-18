@@ -79,17 +79,17 @@ RUN yum install -y bison flex \
 --download-parmetis=1 --download-ptscotch=1 --download-metis=1 --with-sundials-dir=/usr \
 --with-debugging=no --COPTFLAGS="-O3" --CXXOPTFLAGS="-O3" --FOPTFLAGS="-O3" \
  && make -f /petsc-3.9.3/makefile all \
- && make -f /petsc-3.9.3/makefile PETSC_DIR=/petsc-3.9.3 PETSC_ARCH=arch-linux2-cxx-debug test \
- && ln -s /petsc-3.9.3/arch-linux2-cxx-debug/include/* /usr/include/ \
- && ln -s /petsc-3.9.3/arch-linux2-cxx-debug/lib/*a /usr/lib/ \
- && ln -s /petsc-3.9.3/arch-linux2-cxx-debug/lib/modules/* /usr/lib/modules/ \
- && cd /petsc-3.9.3/arch-linux2-cxx-debug/ \
+ && make -f /petsc-3.9.3/makefile PETSC_DIR=/petsc-3.9.3 PETSC_ARCH=arch-linux2-cxx-opt test \
+ && ln -s /petsc-3.9.3/arch-linux2-cxx-opt/include/* /usr/include/ \
+ && ln -s /petsc-3.9.3/arch-linux2-cxx-opt/lib/*a /usr/lib/ \
+ && ln -s /petsc-3.9.3/arch-linux2-cxx-opt/lib/modules/* /usr/lib/modules/ \
+ && cd /petsc-3.9.3/arch-linux2-cxx-opt/ \
  && rm -r externalpackages obj \
  && cd /petsc-3.9.3/ \
  && rm -r src
 
 ENV PETSC_DIR=/petsc-3.9.3/
-ENV PETSC_ARCH=arch-linux2-cxx-debug
+ENV PETSC_ARCH=arch-linux2-cxx-opt
 
 #####################
 # Install SLEPC
@@ -98,11 +98,11 @@ RUN wget http://slepc.upv.es/download/distrib/slepc-3.9.2.tar.gz \
  && tar xzf slepc-3.9.2.tar.gz \
  && rm slepc-3.9.2.tar.gz \
  && cd slepc-3.9.2/ \
- && ./configure --with-debugging=no --CFLAGS="-O3" \
- && make SLEPC_DIR=$PWD PETSC_DIR=/petsc-3.9.3/ PETSC_ARCH=arch-linux2-cxx-debug \
+ && ./configure \
+ && make SLEPC_DIR=$PWD PETSC_DIR=/petsc-3.9.3/ PETSC_ARCH=arch-linux2-cxx-opt \
  && export SLEPC_DIR=/slepc-3.9.2 \
  && make test \
- && rm -r /slepc-3.9.2/arch-linux2-cxx-debug/obj \
+ && rm -r /slepc-3.9.2/arch-linux2-cxx-opt/obj \
  && rm -r /slepc-3.9.2/src
  
 ENV SLEPC_DIR=/slepc-3.9.2
@@ -147,7 +147,7 @@ WORKDIR /opt
 RUN git clone -b v4.2.2 --depth 1 git://github.com/boutproject/BOUT-dev.git BOUT-dev
 
 WORKDIR /opt/BOUT-dev
-RUN ./configure --with-petsc PETSC_DIR=/petsc-3.9.3 PETSC_ARCH=arch-linux2-cxx-debug --with-sundials=/usr/ --with-fftw --with-netcdf --enable-openmp --with-slepc --with-lapack LIBS="-llapack -lblas" --localedir=$PWD/locale --enable-shared --enable-checks=no --enable-track=no --enable-optimize=3 \
+RUN ./configure --with-petsc PETSC_DIR=/petsc-3.9.3 PETSC_ARCH=arch-linux2-cxx-opt --with-sundials=/usr/ --with-fftw --with-netcdf --enable-openmp --with-slepc --with-lapack LIBS="-llapack -lblas" --localedir=$PWD/locale --enable-shared --enable-checks=no --enable-track=no --enable-optimize=3 \
  && make \
  && make python
 
